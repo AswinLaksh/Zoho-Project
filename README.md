@@ -82,7 +82,8 @@ Example input:
             "format":"file",
             "extension":".pdf"
         }
-    }
+    },
+    "required":["name","phoneNumber","resume","email","password"]
 }
 
 ```
