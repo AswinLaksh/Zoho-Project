@@ -19,7 +19,7 @@ The project will be running on:
 
 Example input:
 
-`{
+```{
     "title": "New Form",
     "description": "This form is for checking purposes",
     "type":"object",
@@ -76,5 +76,5 @@ Example input:
             "extension":".pdf"
         }
     }
-}`
+}```
 
