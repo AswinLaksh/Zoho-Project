@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Form Creator</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+  <%- include('./partials/nav.ejs') %>
+  <div class="form-head">
+    <h2>
+      <%= form.title %>
+    </h2>
+    <p>
+      <%= form.formSchema.description %>
+    </p>
+  </div>
+  <div class="form-contents" data-content='<%= JSON.stringify(form.formSchema.properties) %>'>
+    <form id="form" action="/submit/<%= form._id %>" method="post">
+      <% for(let propKey in form.formSchema.properties){%>
+      <% const prop=form.formSchema.properties[propKey] %>
+      <% const isRequired=form.formSchema.required && form.formSchema.required.includes(propKey) %>
+      <% console.log(data.email) %>
+      <label for="<% propKey %>">
+        <%= prop.title?(prop.title):propKey %>
+        <% if(isRequired){ %>*
+        <% } %>
+      </label><br>
+      <% if(prop.type==='array' && prop.items && prop.items.enum){ %>
+      <% prop.items.enum.forEach(option=> { %>
+      <input type="checkbox" name="<%= propKey %>" value="<%= option %>" id="<%= option %>"  <%= data[propKey]===option?'checked':'' %>><label for="<%= option %>">
+        <%= option %>
+      </label><br>
+      <% }) %>
+      <% } else if(prop.enum){ %>
+      <% prop.enum.forEach(option=> { %>
+      <input type="radio" name="<%= propKey %>" value="<%= option %>" id="<%= option %>"> <label for="<%= option %>">
+        <%= option %>
+      </label><br>
+      <% }) %>
+      <% } else if(prop.type==="string" ) {%>
+      <% if (prop.format==='date-time' ) { %>
+      <input type="datetime-local" name="<%= propKey %>" id="date-time" required="<%= isRequired %>" value="<%= data[propKey] %>">
+      <% } else if(prop.format==='date' ) {%>
+      <input type="date" name="<%= propKey %>" id="<%=propKey %>" required="<%= isRequired %>" value="<%= data[propKey] %>">
+      <% } else if(prop.format==='time' ) { %>
+      <input type="time" name="<%= propKey %>" id="<%= propKey %>" required="<%= isRequired %>" value="<%= data[propKey] %>">
+      <% } else if(prop.format==='password' ) {%>
+      <input type="password" name="<%= propKey %>" id="<%= propKey %>" required="<%= isRequired %>">
+      <% } else if(prop.format==='image' ) { %>
+      <input type="file" name="<%= propKey %>" id="<%= propKey %>" accept="image/*" required="<%= isRequired %>" value="<%= data[propKey] %>">
+      <% } else if(prop.format==='video' ) {%>
+      <input type="file" name="<%= propKey %>" id="<%= propKey %>" accept="video/*" required="<%= isRequired %>" value="<%= data[propKey] %>">
+      <% } else if(prop.format==='file' && prop.extension) {%>
+      <input type="file" name="<%= propKey %>" id="<%= propKey %>" accept="<%= prop.extension %>" required="<%= isRequired %>" value="<%= data[propKey] %>">
+      <% } else if(prop.format==='file' ) { %>
+      <input type="file" name="<%= propKey %>" id="<%= propKey %>" required="<%= isRequired %>" value="<%= data[propKey] %>">
+      <% } else if(prop.format==="mobile-number" ) { %>
+      <input type="text" name="<%= propKey %>" id="<%= propKey %>" required="<%= isRequired %>" pattern="^\+?[1-9]\d{1,14}$" value="<%= data[propKey] %>">
+      <% } else if (prop.format==='email' ) { %>
+      <input type="email" name="<%= propKey %>" id="<%= propKey %>" class="email" required="<%= isRequired %>" placeholder="enter" value=<%= data[propKey] %>>
+      <p id="<%= propKey %>-error" data-id="<% propKey %>"></p>
+      <% } else { %>
+      <input type="text" name="<%= propKey %>" id="<%= propKey %>" minlength="<%= prop.minLength || '' %>" required="<%= isRequired %>" value="<%= data[propKey] %>">
+      <p id="<%= propKey %>-error"></p>
+      <% } %>
+      <% } else if(prop.type==='number' ) {%>
+      <input type="number" name="<%= propKey %>" id="<%= propKey %>" required="<%= isRequired %>" value="<%= data[propKey] %>" data-min=<%=prop.minimum %> data-max=<%= prop.maximum %>?><br>
+      <p id="<%= propKey %>-error"></p>
+      <% } else if(prop.type==="boolean" ) {%>
+      <input type="checkbox" name="<%= propKey %>" id="checkbox"><br>
+      <% } %>
+      <br><br>
+      <% } %>
+      <button type="submit">Submit</button>
+    </form>
+    <button onclick="generateShareLink()" data-val="<%= form._id %>" id="link">Generate Export Link</button>
+    <p id="share-link"></p>
+  </div>
+  <script src="/script.js"></script>
+  <script>
+    function applyURLParamsToForm() {
+    const params = new URLSearchParams(window.location.search);
+    const form = document.querySelector("form");
+
+    for (const [key, value] of params.entries()) {
+      const elements = form.querySelectorAll(`[name="${key}"]`);
+
+      elements.forEach(el => {
+        if (el.type === "radio" || el.type === "checkbox") {
+          if (el.value === value) {
+            el.checked = true;
+          }
+        } else {
+          el.value = value;
+        }
+      });
+    }
+  }
+
+  window.addEventListener("DOMContentLoaded", applyURLParamsToForm);
+  </script>
+</body>
+
+</html>

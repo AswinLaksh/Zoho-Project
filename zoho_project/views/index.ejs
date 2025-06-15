@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Form Creator</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('./partials/nav.ejs') %>
+    <div class="form-content">
+        <h2>All Forms</h2>
+        <% if(forms.length>0) { %>
+            <% forms.forEach(form=> { %>
+                <a href="/forms/<%= form._id %>">
+                    <h3 class="title"><%= form.title %></h3>
+                    <p class="description"><%= form.formSchema.description %></p>
+                </a>
+                <a href="/export/<%= form._id %>">Download Report</a>
+            <% }) %>
+        <% } else { %>
+            <h3>Oops, No Forms currently present</h3>
+        <% } %>
+    </div>
+</body>
+</html>

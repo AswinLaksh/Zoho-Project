@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Form Creator</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    input{
+      margin-top: 20px;
+            background: crimson;
+            color: white;
+            padding: 6px;
+            border: 0;
+            font-size: 1.2em;
+            cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <%- include('./partials/nav.ejs') %>
+  <div class="center">
+    <h1>Dynamic Form Creator Website</h1>
+    <form action="/check" method="post" enctype="multipart/form-data">
+      <label for="jsonFile">Drop Your JSON Schema</label>
+      <br>
+      <input type="file" name="jsonFile" id="jsonFile" accept=".json" required>
+      <br>
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+</body>
+</html>
