@@ -5,15 +5,21 @@ How to start the project
 
 First run this command
 
-`npm install`
+```
+npm install
+```
 
 then run this command
 
-`nodemon start`
+```
+nodemon start
+```
 
 The project will be running on:
 
-`http://localhost:3000/`
+```
+http://localhost:3000/
+```
 
 #The JSON Schema formats for input
 
