@@ -14,3 +14,6 @@ then run this command
 The project will be running on:
 
 `http://localhost:3000/`
+
+The JSON Schema formats for input
+
