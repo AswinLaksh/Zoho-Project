@@ -19,7 +19,7 @@ The project will be running on:
 
 Example input:
 
-``` {
+```json {
     "title": "New Form",
     "description": "This form is for checking purposes",
     "type":"object",
