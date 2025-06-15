@@ -10,3 +10,7 @@ First run this command
 then run this command
 
 `nodemon start`
+
+The project will be running on:
+
+`http://localhost:3000/`
